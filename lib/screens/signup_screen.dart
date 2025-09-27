@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'login_screen.dart'; // Asumsi file ini ada untuk navigasi
 
 class SignupScreen extends StatefulWidget {
   static const route = '/signup';
@@ -24,152 +24,179 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  // Komponen untuk label wajib (required label)
+  Widget requiredLabel(String text) => Row(
+        children: [
+          Text(text, style: const TextStyle(fontSize: 13)),
+          const Text('*', style: TextStyle(color: Colors.red, fontSize: 13)),
+        ],
+      );
+
+  // Komponen untuk tombol biru dengan gradient (UI-only)
+  Widget primaryButton(String label, VoidCallback onTap) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          height: 46,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(28),
+            gradient: const LinearGradient(
+              colors: [Color(0xFF1E88FF), Color(0xFF207DFF)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF1E88FF).withOpacity(0.25),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Container(
+            // Asumsi ini adalah child untuk Text
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ), // // Text
+          ), // // BoxDecoration
+        ), // // Container
+      ); // // GestureDetector
+
   @override
   Widget build(BuildContext context) {
-    // Fungsi untuk membuat label dengan tanda bintang merah
-    Widget requiredLabel(String text) => Row(
-      children: [
-        Text(text, style: const TextStyle(fontSize: 13)),
-        const Text('*', style: TextStyle(color: Colors.red, fontSize: 13)),
-      ],
-    );
-
-    // Widget untuk tombol utama (lanjutkan)
-    Widget primaryButton(String label, VoidCallback onTap) => GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 46,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
-          gradient: const LinearGradient(
-            colors: [Color(0xFFF1E88FF), Color(0xFF20D7D7)],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFF1E88FF).withOpacity(0.25),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/logo-mola.png',
-                  height: 80,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(height: 18),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Sign Up Now and Unlock the Power of Justduit',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // logo
+              Image.asset(
+                'assets/logo-mola.png',
+                height: 80, // Asumsi tinggi
+                fit: BoxFit.contain, // Asumsi BoxFit
+              ), // Image.asset
+              const SizedBox(height: 18),
+              // judul
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Sign Up Now and Unlock the Power of Justduit',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                const SizedBox(height: 14),
-                Container(
-                  width: 360,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.fromLTRB(18, 18, 18, 22),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 16,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      requiredLabel('Full Name'),
-                      const SizedBox(height: 6),
-                      TextField(
-                        controller: _name,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your full name',
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      requiredLabel('Email Address'),
-                      const SizedBox(height: 6),
-                      TextField(
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your email',
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      requiredLabel('Confirm Password'),
-                      const SizedBox(height: 6),
-                      TextField(
-                        controller: _confirm,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: 'Re-enter your password',
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      primaryButton('Continue', () {
-                        // opsional: tampilkan snackbar sukses dulu
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Sign up success')),
-                        );
-                        // lalu pindah ke Sign In
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          LoginScreen.route,
-                          (route) => false, // hapus semua route sebelumnya (bersih)
-                        );
-                      }),
-                    ],
-                  ),
+              ),
+              const SizedBox(height: 18),
+
+              // card form
+              Container(
+                width: 360, // Asumsi lebar
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.fromLTRB(
+                  18,
+                  18,
+                  18,
+                  22,
                 ),
-                const SizedBox(height: 12),
-                Center(
-                  child: TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      LoginScreen.route,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
                     ),
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(fontSize: 13),
-                    ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    requiredLabel('Full Name'),
+                    const SizedBox(height: 6),
+                    TextField(
+                      controller: _name,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your full name',
+                      ), // InputDecoration
+                    ), // TextField
+                    const SizedBox(height: 14),
+
+                    requiredLabel('Email Address'),
+                    const SizedBox(height: 6),
+                    TextField(
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your email',
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+
+                    requiredLabel('Password'),
+                    const SizedBox(height: 6),
+                    TextField(
+                      controller: _pass,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Create a password',
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+
+                    requiredLabel('Confirm Password'),
+                    const SizedBox(height: 6),
+                    TextField(
+                      controller: _confirm,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Re-enter your password',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // opsional: tampilkan snackbar (untuk testing)
+                    primaryButton('Continue', () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Sign up success')),
+                      );
+
+                      // Lalu pindah ke Sign In
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        LoginScreen.route, // '/signin'
+                        (route) => false, // hapus semua route sebelumnya (bersih)
+                      );
+                    }),
+                  ],
+                ), // // Column
+              ), // // Container
+
+              const SizedBox(height: 12),
+
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pushReplacementNamed(
+                    context,
+                    LoginScreen.route,
+                  ),
+                  child: const Text('Sign In', style: TextStyle(fontSize: 13)),
+                ), // // TextButton
+              ), // // Center
+            ], // // Column
+          ), // // SingleChildScrollView
+        ), // // SafeArea
+      ), // // Scaffold
     );
   }
 }
